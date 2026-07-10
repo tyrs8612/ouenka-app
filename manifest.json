@@ -1,0 +1,13 @@
+{
+  "name": "青山田上スポーツ少年団 応援歌練習",
+  "short_name": "応援歌練習",
+  "description": "全国大会に向けた応援歌練習アプリ",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#101d33",
+  "background_color": "#101d33",
+  "icons": []
+}

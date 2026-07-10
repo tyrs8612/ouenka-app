@@ -1,0 +1,1829 @@
+/* ============================================================
+   デザイントークン（CSS カスタムプロパティ）
+   ============================================================ */
+:root {
+  /* カラーパレット（チームカラー：ネイビー×レッド×ゴールド） */
+  --navy-900: #0a1222;
+  --navy-800: #101d33;
+  --navy-700: #16273f;
+  --navy-600: #1d3350;
+  --navy-500: #264263;
+  --navy-400: #2f5079;
+
+  --red-700: #9e1f1f;
+  --red-600: #c02a2a;
+  --red-500: #dc3232;
+  --red-400: #e84545;
+
+  --gold-600: #a07e18;
+  --gold-500: #c9a227;
+  --gold-400: #d9b43a;
+  --gold-300: #e8c84a;
+  --gold-100: #f5edd8;
+
+  --text-primary: #f5edd8;
+  --text-secondary: #9db4cf;
+  --text-muted: #55708f;
+  --white: #ffffff;
+
+  /* タイポグラフィ */
+  --font-main: -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN',
+               'Hiragino Sans', 'Noto Sans JP', 'Yu Gothic', 'YuGothic', sans-serif;
+  --font-num: 'SF Mono', ui-monospace, 'Courier New', monospace;
+
+  /* 角丸 */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+
+  /* 影 */
+  --shadow-card: 0 2px 16px rgba(0, 0, 0, 0.5);
+  --shadow-red: 0 0 24px rgba(220, 50, 50, 0.4);
+  --shadow-gold: 0 0 24px rgba(201, 162, 39, 0.35);
+  --shadow-button: 0 4px 16px rgba(0, 0, 0, 0.45);
+
+  /* レイアウト */
+  --nav-height: 64px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+
+  /* トランジション */
+  --transition-fast: 0.15s ease;
+  --transition-med: 0.25s ease;
+}
+
+/* ============================================================
+   リセット & ベース
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--navy-800);
+  color: var(--text-primary);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: var(--font-main);
+  cursor: pointer;
+  border: none;
+  background: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* フォーカス（アクセシビリティ） */
+:focus-visible {
+  outline: 2px solid var(--gold-500);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* アニメーション無効化（ユーザー設定） */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================================
+   ヒーローバナー（プロスピ風・コンパクト）
+   ============================================================ */
+.hero-banner {
+  padding: calc(var(--safe-top) + 14px) 14px 0;
+  background: var(--navy-900);
+}
+
+.hero-frame {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 2px solid var(--gold-500);
+  box-shadow:
+    0 0 0 3px var(--navy-900),
+    0 0 24px rgba(220, 50, 50, 0.5),
+    0 10px 30px rgba(0, 0, 0, 0.7);
+  /* 横長のコンパクトなバナーに制限（縦を抑える） */
+  height: clamp(180px, 46vw, 260px);
+  background: var(--navy-800);
+}
+
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* 顔とバットが見えるよう上寄りに */
+  object-position: 50% 22%;
+  display: block;
+}
+
+/* プロスピ風の光沢オーバーレイ */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, transparent 40%, rgba(10, 18, 34, 0.55) 100%),
+    linear-gradient(115deg, rgba(220, 50, 50, 0.12) 0%, transparent 45%),
+    radial-gradient(ellipse at 80% 10%, rgba(201, 162, 39, 0.18), transparent 50%);
+  pointer-events: none;
+}
+
+/* 上部の斜めシャイン */
+.hero-frame::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -30%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(105deg, transparent, rgba(255,255,255,0.12), transparent);
+  transform: skewX(-15deg);
+  pointer-events: none;
+}
+
+/* 漫画効果音のワード */
+.hero-fx {
+  position: absolute;
+  bottom: 10px;
+  right: 12px;
+  pointer-events: none;
+}
+
+.fx-word {
+  display: inline-block;
+  font-family: 'Arial Black', var(--font-main);
+  font-size: clamp(1.1rem, 4.5vw, 1.6rem);
+  font-weight: 900;
+  font-style: italic;
+  color: var(--gold-300);
+  letter-spacing: 0.02em;
+  transform: rotate(-8deg);
+  text-shadow:
+    2px 2px 0 var(--red-600),
+    -1px -1px 0 var(--red-600),
+    3px 3px 8px rgba(0, 0, 0, 0.6);
+  -webkit-text-stroke: 1.5px var(--navy-900);
+}
+
+/* ============================================================
+   今日の応援メッセージ
+   ============================================================ */
+.daily-message {
+  margin-top: 16px;
+  display: inline-block;
+  background: linear-gradient(135deg, var(--red-600), var(--red-500));
+  color: var(--white);
+  font-size: 0.9rem;
+  font-weight: 800;
+  padding: 10px 20px;
+  border-radius: 99px;
+  box-shadow: var(--shadow-red);
+  letter-spacing: 0.02em;
+  animation: msg-pop 0.4s ease;
+}
+
+@keyframes msg-pop {
+  0% { transform: scale(0.85); opacity: 0; }
+  60% { transform: scale(1.04); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ============================================================
+   関西弁の掛け声トースト（画面中央にポップ）
+   ============================================================ */
+.cheer-toast {
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 500;
+  font-family: 'Arial Black', var(--font-main);
+  font-size: clamp(2rem, 10vw, 3.5rem);
+  font-weight: 900;
+  font-style: italic;
+  color: var(--gold-300);
+  text-align: center;
+  white-space: nowrap;
+  text-shadow:
+    3px 3px 0 var(--red-600),
+    -2px -2px 0 var(--red-600),
+    0 4px 20px rgba(0, 0, 0, 0.7);
+  -webkit-text-stroke: 2px var(--navy-900);
+  pointer-events: none;
+  animation: cheer-anim 1.4s ease forwards;
+}
+
+@keyframes cheer-anim {
+  0%   { transform: translate(-50%, -50%) scale(0.3) rotate(-12deg); opacity: 0; }
+  20%  { transform: translate(-50%, -50%) scale(1.15) rotate(-6deg); opacity: 1; }
+  35%  { transform: translate(-50%, -50%) scale(1) rotate(-6deg); }
+  80%  { transform: translate(-50%, -55%) scale(1) rotate(-6deg); opacity: 1; }
+  100% { transform: translate(-50%, -70%) scale(0.9) rotate(-6deg); opacity: 0; }
+}
+
+/* ============================================================
+   漫画風効果音ポップ（タップ位置に出現）
+   ============================================================ */
+.sfx-pop {
+  position: fixed;
+  z-index: 450;
+  transform: translate(-50%, -50%) rotate(-10deg);
+  font-family: 'Arial Black', var(--font-main);
+  font-size: 1.5rem;
+  font-weight: 900;
+  font-style: italic;
+  color: var(--white);
+  white-space: nowrap;
+  text-shadow:
+    2px 2px 0 var(--red-500),
+    -1px -1px 0 var(--red-500);
+  -webkit-text-stroke: 1px var(--navy-900);
+  pointer-events: none;
+  animation: sfx-anim 0.8s ease forwards;
+}
+
+@keyframes sfx-anim {
+  0%   { transform: translate(-50%, -50%) scale(0.4) rotate(-10deg); opacity: 0; }
+  25%  { transform: translate(-50%, -60%) scale(1.2) rotate(-10deg); opacity: 1; }
+  100% { transform: translate(-50%, -110%) scale(1) rotate(-10deg); opacity: 0; }
+}
+
+/* スタンプカードの煽り文句 */
+.stamp-taunt {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--red-400);
+  margin-bottom: 10px;
+  letter-spacing: 0.02em;
+}
+
+/* スタンプリセットボタン */
+.stamp-reset {
+  display: block;
+  margin: 14px auto 0;
+  padding: 8px 20px;
+  background: transparent;
+  border: 1px solid rgba(157, 180, 207, 0.35);
+  border-radius: 99px;
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.stamp-reset:active {
+  border-color: var(--red-500);
+  color: var(--red-400);
+}
+
+/* ============================================================
+   プロスピ風：全体の質感アップ（光沢・グロウ）
+   ============================================================ */
+
+/* 背景に動きのあるグラデーション */
+body {
+  background:
+    radial-gradient(ellipse at 50% -10%, rgba(29, 51, 80, 0.6), transparent 60%),
+    var(--navy-900);
+  background-attachment: fixed;
+}
+
+/* カードに光沢とエッジ */
+.player-card {
+  background: linear-gradient(160deg, var(--navy-600) 0%, var(--navy-700) 60%, var(--navy-800) 100%);
+  position: relative;
+}
+
+.player-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  pointer-events: none;
+}
+
+/* 番号にプロスピ風の強いグロウ */
+.card-number,
+.next-number {
+  background: linear-gradient(180deg, var(--gold-300), var(--gold-500));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 10px rgba(201, 162, 39, 0.55));
+}
+
+/* 詳細ヒーローの巨大番号もグラデ化 */
+.player-number-display {
+  background: linear-gradient(180deg, var(--gold-300) 0%, var(--gold-500) 60%, var(--gold-600) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 24px rgba(201, 162, 39, 0.6));
+}
+
+/* 連続再生ボタンに強い立体感 */
+.btn-sequential {
+  background: linear-gradient(160deg, var(--red-500) 0%, var(--red-600) 45%, var(--red-700) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.25),
+    var(--shadow-red),
+    0 6px 20px rgba(0,0,0,0.5);
+}
+
+/* ボトムナビも光沢 */
+#bottom-nav {
+  background: linear-gradient(180deg, rgba(22, 39, 63, 0.97), rgba(10, 18, 34, 0.98));
+}
+
+.nav-tab.active .nav-icon {
+  filter: drop-shadow(0 0 8px rgba(201, 162, 39, 0.7));
+}
+
+/* セクションラベルにアクセントバー（インラインpadding上書きのものは除外） */
+.section-label:not([style]) {
+  position: relative;
+  padding-left: 26px;
+}
+
+.section-label:not([style])::before {
+  content: '';
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 14px;
+  background: linear-gradient(180deg, var(--red-400), var(--red-600));
+  border-radius: 2px;
+}
+
+/* スタンプ進捗バーに光沢 */
+.stamp-progress-fill {
+  background: linear-gradient(90deg, var(--gold-600), var(--gold-300), var(--gold-500));
+  box-shadow: 0 0 14px rgba(201, 162, 39, 0.6), inset 0 1px 0 rgba(255,255,255,0.4);
+}
+
+/* ============================================================
+   ページ内 YouTube プレイヤー（埋め込み）
+   ============================================================ */
+.player-embed-section {
+  padding: 24px 20px 8px;
+}
+
+.yt-embed {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--navy-900);
+  border: 2px solid var(--gold-500);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.55), 0 0 16px rgba(201,162,39,0.25);
+  margin-bottom: 12px;
+}
+
+/* クリック前のサムネイル（軽量） */
+.yt-embed-poster {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  background: var(--navy-900);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.yt-embed-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.yt-embed-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10,18,34,0.25), rgba(10,18,34,0.7));
+  pointer-events: none;
+}
+
+/* 大きな再生ボタン */
+.yt-embed-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 68px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, #ff3333, #c00);
+  color: var(--white);
+  font-size: 1.6rem;
+  border-radius: 50%;
+  border: 3px solid var(--white);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6), 0 0 24px rgba(220,50,50,0.6);
+  padding-left: 5px; /* ▶ の視覚的中心合わせ */
+  transition: transform var(--transition-fast);
+  pointer-events: none;
+}
+
+.yt-embed-poster:active .yt-embed-play {
+  transform: translate(-50%, -50%) scale(0.9);
+}
+
+.yt-embed-label {
+  position: absolute;
+  left: 12px;
+  bottom: 10px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+  pointer-events: none;
+}
+
+/* 差し替わった本物のプレイヤー */
+.yt-embed-iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* ============================================================
+   ローディング画面
+   ============================================================ */
+.loading-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  gap: 20px;
+}
+
+.loading-ball {
+  font-size: 4rem;
+  animation: spin 1.5s linear infinite;
+}
+
+.loading-text {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================================
+   アプリコンテナ
+   ============================================================ */
+#app {
+  max-width: 640px;
+  margin: 0 auto;
+  padding-bottom: calc(var(--nav-height) + var(--safe-bottom) + 16px);
+}
+
+/* ナビゲーション分のスペーサー */
+.nav-spacer {
+  height: 16px;
+}
+
+/* ============================================================
+   ボトムナビゲーション
+   ============================================================ */
+#bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(var(--nav-height) + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  background: rgba(11, 24, 38, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 2px solid var(--red-600);
+  display: flex;
+  z-index: 100;
+  max-width: 640px;
+  margin: 0 auto;
+  /* 画面幅が 640px 以下のときも fixed が中央に来るよう left/right を使う */
+}
+
+/* 640px 超のとき中央配置 */
+@media (min-width: 641px) {
+  #bottom-nav {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: 640px;
+    border-left: 1px solid rgba(201, 162, 39, 0.1);
+    border-right: 1px solid rgba(201, 162, 39, 0.1);
+  }
+}
+
+.nav-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 4px;
+  color: var(--text-muted);
+  transition: color var(--transition-fast);
+  min-height: 44px;
+}
+
+.nav-tab.active {
+  color: var(--gold-500);
+}
+
+.nav-tab:not(.active):hover {
+  color: var(--text-secondary);
+}
+
+.nav-icon {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.nav-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+/* ============================================================
+   アプリヘッダー（ホーム画面）
+   ============================================================ */
+.app-header {
+  position: relative;
+  padding: calc(var(--safe-top) + 28px) 20px 32px;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(220, 50, 50, 0.20) 0%, transparent 70%),
+    linear-gradient(180deg, var(--navy-900) 0%, var(--navy-800) 100%);
+  text-align: center;
+  overflow: hidden;
+}
+
+/* 背景の光の柱（スタジアムライト風） */
+.app-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 30%;
+  right: 30%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--red-500), transparent);
+  opacity: 0.7;
+}
+
+.header-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--red-600), var(--red-400));
+  color: var(--white);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  padding: 4px 12px;
+  border-radius: 99px;
+  margin-bottom: 14px;
+  border: 1px solid var(--gold-500);
+}
+
+.header-title {
+  font-size: clamp(1.25rem, 5vw, 1.65rem);
+  font-weight: 900;
+  color: var(--text-primary);
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.header-subtitle {
+  font-size: 0.85rem;
+  color: var(--gold-500);
+  letter-spacing: 0.15em;
+  font-weight: 700;
+}
+
+/* ============================================================
+   アクションボタン（全員連続再生）
+   ============================================================ */
+.action-section {
+  padding: 20px 16px 8px;
+}
+
+.btn-sequential {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 18px 24px;
+  background: linear-gradient(135deg, var(--red-700) 0%, var(--red-500) 50%, var(--red-400) 100%);
+  color: var(--white);
+  border-radius: var(--radius-lg);
+  font-size: 1.1rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  box-shadow: var(--shadow-red), var(--shadow-button);
+  border: 2px solid var(--gold-500);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  touch-action: manipulation;
+  min-height: 64px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* きらめきエフェクト */
+.btn-sequential::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 40%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: skewX(-20deg);
+  animation: shimmer 3s ease infinite 1s;
+}
+
+@keyframes shimmer {
+  0% { left: -60%; opacity: 0; }
+  10% { opacity: 1; }
+  40% { left: 110%; opacity: 0; }
+  100% { left: 110%; opacity: 0; }
+}
+
+.btn-sequential:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 12px rgba(201, 162, 39, 0.3);
+}
+
+.btn-icon {
+  font-size: 1.3rem;
+}
+
+.btn-text {
+  flex: 1;
+  text-align: left;
+}
+
+.btn-sub {
+  font-size: 0.7rem;
+  font-weight: 600;
+  opacity: 0.75;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   セクションラベル
+   ============================================================ */
+.section-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  padding: 0 16px;
+  margin-bottom: 10px;
+}
+
+/* ============================================================
+   練習スタンプカード
+   ============================================================ */
+.stamp-section {
+  padding: 24px 16px 0;
+}
+
+.stamp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.stamp-count {
+  font-family: var(--font-num);
+  font-size: 0.9rem;
+  font-weight: 900;
+  color: var(--gold-400);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 進捗バー */
+.stamp-progress-track {
+  height: 10px;
+  background: var(--navy-700);
+  border-radius: 99px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.stamp-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-600), var(--gold-400));
+  border-radius: 99px;
+  transition: width 0.5s ease;
+  box-shadow: 0 0 12px rgba(201, 162, 39, 0.5);
+}
+
+/* コンプリート表示 */
+.stamp-complete {
+  margin-top: 14px;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--gold-600), var(--gold-400));
+  color: var(--navy-900);
+  border-radius: var(--radius-md);
+  font-size: 0.92rem;
+  font-weight: 900;
+  text-align: center;
+  letter-spacing: 0.02em;
+  animation: stamp-pop 0.4s ease;
+}
+
+@keyframes stamp-pop {
+  0% { transform: scale(0.9); opacity: 0; }
+  60% { transform: scale(1.03); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* スタンプのマス目 */
+.stamp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.stamp-cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--navy-700);
+  border: 2px dashed rgba(139, 168, 200, 0.25);
+  border-radius: var(--radius-sm);
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.stamp-cell:active {
+  transform: scale(0.92);
+}
+
+.stamp-cell .stamp-mark {
+  font-family: var(--font-num);
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--text-muted);
+}
+
+/* 押印済みのマス */
+.stamp-cell.done {
+  background: radial-gradient(circle at center, rgba(201, 162, 39, 0.25), var(--navy-700));
+  border: 2px solid var(--gold-500);
+  border-style: solid;
+}
+
+.stamp-cell.done .stamp-mark {
+  font-size: 1.5rem;
+  color: var(--gold-400);
+  animation: stamp-in 0.3s ease;
+}
+
+@keyframes stamp-in {
+  0% { transform: scale(1.8) rotate(-15deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+.stamp-hint {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-top: 12px;
+  text-align: center;
+}
+
+/* ============================================================
+   「次に覚える曲」
+   ============================================================ */
+.next-learn-section {
+  padding: 20px 16px 0;
+}
+
+.next-learn-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: linear-gradient(135deg, var(--navy-700) 0%, var(--navy-600) 100%);
+  border: 1px solid rgba(201, 162, 39, 0.3);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  transition: border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.next-learn-card:active {
+  transform: scale(0.98);
+  border-color: var(--gold-500);
+}
+
+.next-number {
+  font-family: var(--font-num);
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: var(--gold-500);
+  min-width: 2.2ch;
+  text-align: center;
+  text-shadow: 0 0 16px rgba(201, 162, 39, 0.5);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.next-info {
+  flex: 1;
+}
+
+.next-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.next-pro {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin-top: 3px;
+}
+
+.next-count {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.next-arrow {
+  color: var(--gold-500);
+  font-size: 1.4rem;
+  font-weight: 300;
+}
+
+/* ============================================================
+   最近再生
+   ============================================================ */
+.recent-section {
+  padding: 20px 0 0;
+}
+
+.recent-section .section-label {
+  padding: 0 16px;
+}
+
+.recent-scroll {
+  display: flex;
+  gap: 8px;
+  padding: 0 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.recent-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.recent-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--navy-600);
+  border: 1px solid rgba(201, 162, 39, 0.25);
+  border-radius: 99px;
+  padding: 8px 14px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: border-color var(--transition-fast);
+}
+
+.recent-chip:active {
+  border-color: var(--gold-500);
+}
+
+.recent-chip-num {
+  font-family: var(--font-num);
+  font-size: 0.8rem;
+  font-weight: 900;
+  color: var(--gold-500);
+}
+
+.recent-chip-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* ============================================================
+   並べ替えバー
+   ============================================================ */
+.sort-bar {
+  display: flex;
+  gap: 8px;
+  padding: 20px 16px 10px;
+}
+
+.sort-btn {
+  flex: 1;
+  padding: 10px 16px;
+  background: var(--navy-700);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transition: background var(--transition-fast), color var(--transition-fast),
+              border-color var(--transition-fast);
+  min-height: 44px;
+}
+
+.sort-btn.active {
+  background: linear-gradient(135deg, var(--gold-600), var(--gold-500));
+  color: var(--navy-900);
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(201, 162, 39, 0.35);
+}
+
+/* ============================================================
+   選手カード（一覧）
+   ============================================================ */
+.player-list {
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.player-card {
+  background: var(--navy-700);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.player-card:active {
+  transform: scale(0.98);
+  border-color: rgba(201, 162, 39, 0.4);
+}
+
+/* 背番号別カラーアクセント（左ボーダー） */
+.player-card {
+  border-left: 4px solid var(--red-500);
+}
+
+.player-card-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  min-height: 76px;
+}
+
+/* スコアボード風の背番号 */
+.card-number {
+  font-family: var(--font-num);
+  font-size: clamp(2rem, 6vw, 2.8rem);
+  font-weight: 900;
+  color: var(--gold-500);
+  min-width: 2.4ch;
+  text-align: center;
+  text-shadow: 0 0 18px rgba(201, 162, 39, 0.5);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-pro {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin-top: 3px;
+}
+
+.card-count {
+  font-size: 0.7rem;
+  color: var(--gold-600);
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.card-fav-badge {
+  font-size: 1rem;
+}
+
+.card-play-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(220, 50, 50, 0.18);
+  border-radius: 50%;
+  color: var(--red-400);
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   サブヘッダー（検索・お気に入り画面）
+   ============================================================ */
+.sub-header {
+  padding: calc(var(--safe-top) + 20px) 16px 16px;
+  background: var(--navy-900);
+  border-bottom: 1px solid rgba(201, 162, 39, 0.15);
+}
+
+.sub-header-title {
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  letter-spacing: 0.03em;
+}
+
+/* ============================================================
+   検索画面
+   ============================================================ */
+.search-box-wrap {
+  padding: 16px 16px 8px;
+  position: sticky;
+  top: 0;
+  background: var(--navy-800);
+  z-index: 10;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.search-input {
+  width: 100%;
+  background: var(--navy-700);
+  border: 1.5px solid rgba(201, 162, 39, 0.3);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  font-size: 1rem;
+  padding: 14px 18px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.search-input:focus {
+  border-color: var(--gold-500);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+  outline: none;
+}
+
+.search-hint {
+  padding: 24px 20px;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.view-search .player-list {
+  padding-top: 16px;
+}
+
+/* ============================================================
+   エンプティステート
+   ============================================================ */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+  gap: 12px;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  opacity: 0.5;
+}
+
+.empty-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.empty-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.btn-go-home {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 12px 28px;
+  background: linear-gradient(135deg, var(--gold-600), var(--gold-500));
+  color: var(--navy-900);
+  border-radius: 99px;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+/* ============================================================
+   選手詳細画面
+   ============================================================ */
+.view-player {
+  /* 上部の余白（セーフエリア + ヘッダー分） */
+  padding-top: var(--safe-top);
+}
+
+/* 詳細ヘッダー（戻る + お気に入り） */
+.player-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: var(--navy-900);
+  border-bottom: 1px solid rgba(201, 162, 39, 0.12);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--gold-500);
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  transition: opacity var(--transition-fast);
+  min-height: 44px;
+}
+
+.back-btn:active {
+  opacity: 0.7;
+}
+
+.fav-btn {
+  font-size: 1.5rem;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  transition: color var(--transition-fast), transform var(--transition-fast);
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.fav-btn.active {
+  color: var(--gold-500);
+}
+
+@keyframes bounce {
+  0%, 100% { transform: scale(1); }
+  40% { transform: scale(1.35); }
+  70% { transform: scale(0.9); }
+}
+
+.fav-btn.bounce {
+  animation: bounce 0.3s ease;
+}
+
+/* 選手ヒーローセクション */
+.player-hero {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 28px 20px 24px;
+  background:
+    radial-gradient(ellipse 100% 80% at 20% 50%, rgba(220, 50, 50, 0.16) 0%, transparent 60%),
+    linear-gradient(180deg, var(--navy-900) 0%, var(--navy-800) 100%);
+  border-bottom: 1px solid rgba(201, 162, 39, 0.1);
+}
+
+/* 大型スコアボード番号（シグネチャー要素） */
+.player-number-display {
+  font-family: var(--font-num);
+  font-size: clamp(5rem, 18vw, 7rem);
+  font-weight: 900;
+  color: var(--gold-500);
+  line-height: 1;
+  text-shadow:
+    0 0 30px rgba(201, 162, 39, 0.6),
+    0 0 60px rgba(201, 162, 39, 0.2);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+  min-width: 2.2ch;
+  text-align: center;
+  letter-spacing: -0.03em;
+}
+
+.player-hero-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.player-name {
+  font-size: clamp(1.4rem, 5vw, 1.9rem);
+  font-weight: 900;
+  color: var(--text-primary);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+
+.player-pro-badge {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 12px;
+  background: rgba(201, 162, 39, 0.15);
+  border: 1px solid rgba(201, 162, 39, 0.4);
+  border-radius: 99px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--gold-300);
+  letter-spacing: 0.03em;
+}
+
+.practice-badge {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.practice-badge strong {
+  color: var(--gold-400);
+  font-size: 1.1rem;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.practice-badge.pulse strong {
+  animation: pulse 0.4s ease;
+}
+
+/* 歌詞セクション */
+.lyrics-section {
+  padding: 24px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.lyrics-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.lyrics-body {
+  font-size: clamp(1.05rem, 3.5vw, 1.2rem);
+  line-height: 2;
+  color: var(--text-primary);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  background: var(--navy-700);
+  border-left: 3px solid var(--red-500);
+  padding: 20px;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+/* YouTube セクション */
+.youtube-section {
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.btn-youtube {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 18px 24px;
+  background: linear-gradient(135deg, #c00 0%, #ff3333 100%);
+  color: var(--white);
+  border-radius: var(--radius-md);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  box-shadow: 0 4px 16px rgba(200, 0, 0, 0.4);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  min-height: 58px;
+  touch-action: manipulation;
+}
+
+.btn-youtube:active {
+  transform: scale(0.97);
+  box-shadow: 0 2px 8px rgba(200, 0, 0, 0.3);
+}
+
+.btn-youtube-alt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 24px;
+  background: transparent;
+  border: 1.5px solid rgba(200, 0, 0, 0.5);
+  color: #ff6666;
+  border-radius: var(--radius-md);
+  font-size: 0.92rem;
+  font-weight: 700;
+  transition: background var(--transition-fast);
+  min-height: 50px;
+  touch-action: manipulation;
+}
+
+.btn-youtube-alt:active {
+  background: rgba(200, 0, 0, 0.1);
+}
+
+.yt-icon {
+  font-size: 1.2rem;
+}
+
+/* 選手ナビゲーション（前/次） */
+.player-nav {
+  display: flex;
+  gap: 10px;
+  padding: 20px 16px;
+}
+
+.player-nav-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  background: var(--navy-700);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+  min-height: 64px;
+}
+
+.player-nav-btn:active {
+  background: var(--navy-600);
+  border-color: rgba(201, 162, 39, 0.3);
+}
+
+.player-nav-btn.prev {
+  flex-direction: row;
+  text-align: left;
+}
+
+.player-nav-btn.next {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.player-nav-placeholder {
+  flex: 1;
+}
+
+.nav-arrow {
+  font-size: 1.6rem;
+  color: var(--gold-500);
+  font-weight: 300;
+  flex-shrink: 0;
+}
+
+.nav-btn-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.nav-btn-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.nav-btn-name {
+  font-size: 0.92rem;
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+/* ============================================================
+   連続再生モーダル
+   ============================================================ */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: flex-end;
+}
+
+.modal[hidden] {
+  display: none;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 12, 22, 0.85);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.modal-panel {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  background: var(--navy-800);
+  border-top: 2px solid var(--gold-500);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.6);
+  max-height: 92dvh;
+  overflow-y: auto;
+  padding-bottom: calc(var(--safe-bottom) + 16px);
+  animation: slide-up 0.3s ease;
+}
+
+@keyframes slide-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid rgba(201, 162, 39, 0.15);
+  gap: 16px;
+}
+
+.modal-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.modal-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--gold-500);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* 進捗ドット */
+.seq-progress {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.seq-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--navy-500);
+  flex-shrink: 0;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.seq-dot.done {
+  background: var(--gold-600);
+}
+
+.seq-dot.active {
+  background: var(--gold-500);
+  transform: scale(1.4);
+  box-shadow: 0 0 8px rgba(201, 162, 39, 0.7);
+}
+
+.seq-count {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 700;
+  margin-left: 4px;
+  white-space: nowrap;
+}
+
+.modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--navy-600);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  flex-shrink: 0;
+  transition: background var(--transition-fast);
+}
+
+.modal-close:active {
+  background: var(--navy-500);
+}
+
+.modal-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* スコアボード風表示（モーダル内） */
+.seq-scoreboard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--navy-900);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  border: 1px solid rgba(201, 162, 39, 0.2);
+}
+
+.seq-number {
+  font-family: var(--font-num);
+  font-size: clamp(3rem, 12vw, 5rem);
+  font-weight: 900;
+  color: var(--gold-500);
+  text-shadow: 0 0 30px rgba(201, 162, 39, 0.6);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  min-width: 2.2ch;
+  text-align: center;
+}
+
+.seq-player-info {
+  flex: 1;
+}
+
+.seq-name {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--text-primary);
+}
+
+.seq-pro {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-top: 5px;
+}
+
+/* モーダル内歌詞 */
+.seq-lyrics-wrap {
+  background: var(--navy-700);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.seq-lyrics-label {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.seq-lyrics {
+  font-size: 0.95rem;
+  line-height: 2;
+  color: var(--text-primary);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* モーダルアクションボタン */
+.seq-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-seq-youtube {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(135deg, #c00 0%, #ff3333 100%);
+  color: var(--white);
+  border-radius: var(--radius-md);
+  font-size: 1.05rem;
+  font-weight: 800;
+  box-shadow: 0 4px 16px rgba(200, 0, 0, 0.4);
+  min-height: 58px;
+  touch-action: manipulation;
+  transition: transform var(--transition-fast);
+}
+
+.btn-seq-youtube:active {
+  transform: scale(0.97);
+}
+
+.yt-logo {
+  font-size: 1.2rem;
+}
+
+.btn-seq-next {
+  width: 100%;
+  padding: 16px;
+  background: var(--navy-600);
+  border: 1.5px solid rgba(201, 162, 39, 0.35);
+  color: var(--gold-400);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 800;
+  min-height: 54px;
+  transition: background var(--transition-fast);
+  touch-action: manipulation;
+}
+
+.btn-seq-next:active {
+  background: var(--navy-500);
+}
+
+.seq-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* ============================================================
+   エラー画面
+   ============================================================ */
+.error-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60dvh;
+  gap: 16px;
+  padding: 32px;
+  text-align: center;
+}
+
+.error-screen .error-icon {
+  font-size: 3rem;
+}
+
+.error-screen p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.error-screen button {
+  padding: 12px 28px;
+  background: linear-gradient(135deg, var(--gold-600), var(--gold-500));
+  color: var(--navy-900);
+  border-radius: 99px;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+/* ============================================================
+   ビュートランジション
+   ============================================================ */
+.view-home,
+.view-player,
+.view-favorites,
+.view-search {
+  animation: fade-in 0.2s ease;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   レスポンシブ（タブレット以上）
+   ============================================================ */
+@media (min-width: 480px) {
+  .player-list {
+    gap: 12px;
+  }
+
+  .card-name {
+    font-size: 1.1rem;
+  }
+
+  .lyrics-body {
+    font-size: 1.15rem;
+  }
+}
+
+@media (min-width: 640px) {
+  body {
+    background: var(--navy-900);
+  }
+
+  #app {
+    border-left: 1px solid rgba(255, 255, 255, 0.06);
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    min-height: 100dvh;
+  }
+}
+
+/* ============================================================
+   iOS Safari 対応
+   ============================================================ */
+
+/* ノッチ/Dynamic Island 対応 */
+.app-header {
+  padding-top: calc(var(--safe-top) + 28px);
+}
+
+/* スクロールバウンス防止 */
+@supports (-webkit-touch-callout: none) {
+  body {
+    -webkit-overflow-scrolling: touch;
+  }
+}
