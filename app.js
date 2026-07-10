@@ -728,22 +728,23 @@ function playEmbed(wrap) {
 
   const iframe = document.createElement('iframe');
   iframe.className = 'yt-embed-iframe';
-  // youtube-nocookie を使い、プライバシー強化モードで埋め込む
-  iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}`
-             + '?autoplay=1&rel=0&playsinline=1&modestbranding=1';
+  // 標準の youtube.com 埋め込み（autoplayが最も安定する）
+  iframe.src = `https://www.youtube.com/embed/${encodeURIComponent(videoId)}`
+             + '?autoplay=1&playsinline=1&rel=0&modestbranding=1';
   iframe.title = '応援歌プレイヤー';
-  iframe.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
+  iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
   iframe.allowFullscreen = true;
-  iframe.loading = 'lazy';
   iframe.referrerPolicy = 'strict-origin-when-cross-origin';
 
-  // サムネイルを消してプレイヤーを差し込む
+  // サムネイルを消してプレイヤーを差し込む（タップと同じ処理内で同期的に行う＝1タップで再生）
   wrap.innerHTML = '';
   wrap.appendChild(iframe);
 
-  // 練習カウント＆ガチャ券（外部で開いたときと同じ扱い）
-  popRandomCheer();
+  // 練習カウントのみ記録（掛け声トーストは出さない＝2度押し防止）
   recordPlay(playerId);
+
+  // 埋め込みが表示されない動画への保険：数秒後に「開けない場合」リンクを添える
+  wrap.dataset.fallbackUrl = wrap.dataset.fallbackUrl || '';
 }
 
 /** 練習カウントを +1 し、最近再生・ガチャ券を更新 */
@@ -906,6 +907,8 @@ function renderYoutubeEmbed(player, videoId, label) {
   if (!videoId) return '';
   // サムネイルはYouTube公式のものを使用
   const thumb = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+  // 保険用の外部リンク（埋め込みが真っ暗な動画のとき用）
+  const watchUrl = `https://www.youtube.com/watch?v=${videoId}`;
   return `
     <div class="yt-embed" data-video-id="${esc(videoId)}"
          data-player-id="${player.id}">
@@ -918,6 +921,11 @@ function renderYoutubeEmbed(player, videoId, label) {
         <span class="yt-embed-label">${esc(label)}</span>
       </button>
     </div>
+    <a class="yt-embed-fallback"
+       href="${esc(watchUrl)}" target="_blank" rel="noopener noreferrer"
+       data-action="open-youtube" data-url="${esc(watchUrl)}" data-player-id="${player.id}">
+      ▶ 真っ暗で再生できない時はこちら（YouTubeで開く）
+    </a>
   `;
 }
 

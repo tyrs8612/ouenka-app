@@ -481,6 +481,22 @@ body {
   display: block;
 }
 
+/* 「真っ暗な時はこちら」保険リンク */
+.yt-embed-fallback {
+  display: block;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  padding: 8px;
+  margin: -4px 0 12px;
+  text-decoration: underline;
+  text-decoration-color: rgba(157, 180, 207, 0.4);
+}
+
+.yt-embed-fallback:active {
+  color: var(--gold-400);
+}
+
 /* ============================================================
    ローディング画面
    ============================================================ */
